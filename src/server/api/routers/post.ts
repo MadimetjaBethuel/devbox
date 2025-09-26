@@ -14,10 +14,19 @@ const posts: Post[] = [
   },
 ];
 
+
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
+    .query(async({ctx, input }) => {
+
+      try {
+        const repos = await ctx.octokit.rest.repos.listForAuthenticatedUser();
+        console.log(repos.data);
+      } catch (error) {
+        console.error("Error fetching repositories:", error);
+      }
+      
       return {
         greeting: `Hello ${input.text}`,
       };
