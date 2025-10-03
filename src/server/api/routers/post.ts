@@ -15,7 +15,28 @@ const posts: Post[] = [
 ];
 
 
+const HTTP = {
+  "GET": "GET",
+  "POST": "POST",
+  "PUT": "PUT",
+  "DELETE": "DELETE",
+  "PATCH": "PATCH",
+
+
+  "HEAD": "HEAD",
+  "OPTIONS": "OPTIONS",
+  "CONNECT": "CONNECT",
+  "TRACE": "TRACE"
+}
+
+
 export const postRouter = createTRPCRouter({
+
+  repos: publicProcedure.query(async ({ ctx }) => {
+    const repos = await ctx.octokit.rest.repos.listForAuthenticatedUser();
+    console.log(repos);
+    return repos.data;
+  }),
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(async({ctx, input }) => {
