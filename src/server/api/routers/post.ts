@@ -34,7 +34,7 @@ export const postRouter = createTRPCRouter({
 
   repos: publicProcedure.query(async ({ ctx }) => {
     const repos = await ctx.octokit.rest.repos.listForAuthenticatedUser();
-    console.log(repos);
+    console.log(repos.data);
     return repos.data;
   }),
   hello: publicProcedure
